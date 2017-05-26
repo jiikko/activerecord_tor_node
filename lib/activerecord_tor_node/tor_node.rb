@@ -1,4 +1,10 @@
+require 'open-uri'
+
 class TorNode < ActiveRecord::Base
+  JSON_URLS = [
+    'http://hqpeak.com/torexitlist/free/?format=json',
+  ]
+
   class << self
     def fetch_tor_nodes_ip!
       ActiveRecord::Base.transaction do
@@ -18,16 +24,16 @@ class TorNode < ActiveRecord::Base
     private
 
     def parse_json_url
-      json_urls.each do |url|
+      JSON_URLS.each do |url|
         file =
           with_rescue do
             open(url)
           end
-        next file.nil?
+        next unless file
 
         result =
           with_rescue do
-            JSON.parse(file).each do |ip|
+            JSON.load(file).each do |ip|
               TorNode.create!(ip: ip)
             end
             true
@@ -39,11 +45,6 @@ class TorNode < ActiveRecord::Base
 
     def success?
       TorNode.exists?
-    end
-
-    def json_urls
-      [ 'http://hqpeak.com/torexitlist/free/?format=json',
-      ]
     end
 
     def with_rescue

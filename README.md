@@ -20,7 +20,7 @@ Or install it yourself as:
 
 ## Usage
 ```
-$ bundle exec rails g model tor_nodes ip:unique
+$ bundle exec rails g migration create_tor_node ip:string:index
 ```
 
 ```
