@@ -11,7 +11,7 @@ class TorNode < ActiveRecord::Base
         TorNode.delete_all
         return if parse_json_url
         unless success?
-          # なんらかに通知する
+          yield if block_given? # なんらかに通知する
           raise('rollback!')
         end
       end
