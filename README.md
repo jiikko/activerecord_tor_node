@@ -1,4 +1,4 @@
-# ActiverecordTorNode
+# ActiveRecordTorNode
 
 * detect access from tor
 
